@@ -14,10 +14,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-@Configuration
+
 public class EmbeddedTomcatWithSSLConfiguration {
 
-	@Bean
+	
 	public EmbeddedServletContainerFactory servletContainer() {
 		TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory();
 		tomcat.addAdditionalTomcatConnectors(createSslConnector());

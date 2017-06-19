@@ -2,10 +2,8 @@ package com.praveen.praveen;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ComponentScan;
 
-import com.praveen.praveen.support.AbstractApplicationConfiguration;
-import com.praveen.praveen.support.EmbeddedTomcatWithSSLConfiguration;
 
 public class PraveenApplication {
 	
@@ -13,5 +11,7 @@ public class PraveenApplication {
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext ctx = SpringApplication.run(Configuration.class, args);
+		for(String name: ctx.getBeanDefinitionNames())
+		System.out.println("the object is "+name);
 	}
 }
