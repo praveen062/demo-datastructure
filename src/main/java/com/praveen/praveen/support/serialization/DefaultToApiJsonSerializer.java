@@ -17,24 +17,32 @@ import com.praveen.praveen.support.service.ToApiJsonSerializer;
 @Component
 public final class DefaultToApiJsonSerializer<T> implements ToApiJsonSerializer<T> {
 
- /*   private final ExcludeNothingWithPrettyPrintingOffJsonSerializerGoogleGson excludeNothingWithPrettyPrintingOff;
-    private final ExcludeNothingWithPrettyPrintingOnJsonSerializerGoogleGson excludeNothingWithPrettyPrintingOn;
-    private final CommandProcessingResultJsonSerializer commandProcessingResultSerializer;*/
-    private final GoogleGsonSerializerHelper helper;
+    private  ExcludeNothingWithPrettyPrintingOffJsonSerializerGoogleGson excludeNothingWithPrettyPrintingOff;
+    private  ExcludeNothingWithPrettyPrintingOnJsonSerializerGoogleGson excludeNothingWithPrettyPrintingOn;
+    private  CommandProcessingResultJsonSerializer commandProcessingResultSerializer;
+    private  GoogleGsonSerializerHelper helper;
 
+    
     @Autowired
-    public DefaultToApiJsonSerializer( final GoogleGsonSerializerHelper helper) {
+    public DefaultToApiJsonSerializer(
+            final ExcludeNothingWithPrettyPrintingOffJsonSerializerGoogleGson excludeNothingWithPrettyPrintingOff,
+            final ExcludeNothingWithPrettyPrintingOnJsonSerializerGoogleGson excludeNothingWithPrettyPrintingOn,
+            final CommandProcessingResultJsonSerializer commandProcessingResultSerializer, final GoogleGsonSerializerHelper helper) {
+        this.excludeNothingWithPrettyPrintingOff = excludeNothingWithPrettyPrintingOff;
+        this.excludeNothingWithPrettyPrintingOn = excludeNothingWithPrettyPrintingOn;
+        this.commandProcessingResultSerializer = commandProcessingResultSerializer;
         this.helper = helper;
     }
 
     @Override
     public String serializeResult(final Object object) {
-        return "";
+        return this.commandProcessingResultSerializer.serialize(object);
     }
 
     @Override
     public String serialize(final Object object) {
-        return "";
+    	System.out.println("the exclude type is "+this.excludeNothingWithPrettyPrintingOff);
+        return this.excludeNothingWithPrettyPrintingOff.serialize(object);
     }
 
     @Override
@@ -42,7 +50,7 @@ public final class DefaultToApiJsonSerializer<T> implements ToApiJsonSerializer<
         String json = "";
 
         if (prettyOn) {
-            json = "";
+            json = this.excludeNothingWithPrettyPrintingOn.serialize(object);
         } else {
             json = serialize(object);
         }
@@ -52,25 +60,22 @@ public final class DefaultToApiJsonSerializer<T> implements ToApiJsonSerializer<
     @Override
     public String serialize(final ApiRequestJsonSerializationSettings settings, final Collection<T> collection,
             final Set<String> supportedResponseParameters) {
-     /*   final Gson delegatedSerializer = findAppropriateSerializer(settings, supportedResponseParameters);
-        return serializeWithSettings(delegatedSerializer, settings, collection.toArray());*/
-    	return"";
+        final Gson delegatedSerializer = findAppropriateSerializer(settings, supportedResponseParameters);
+        return serializeWithSettings(delegatedSerializer, settings, collection.toArray());
     }
 
     @Override
     public String serialize(final ApiRequestJsonSerializationSettings settings, final T singleObject,
             final Set<String> supportedResponseParameters) {
-        /*final Gson delegatedSerializer = findAppropriateSerializer(settings, supportedResponseParameters);
-        return serializeWithSettings(delegatedSerializer, settings, singleObject);*/
-    	return"";
+        final Gson delegatedSerializer = findAppropriateSerializer(settings, supportedResponseParameters);
+        return serializeWithSettings(delegatedSerializer, settings, singleObject);
     }
 
     @Override
     public String serialize(final ApiRequestJsonSerializationSettings settings, final Page<T> singleObject,
             final Set<String> supportedResponseParameters) {
-       /* final Gson delegatedSerializer = findAppropriateSerializer(settings, supportedResponseParameters);
-        return serializeWithSettings(delegatedSerializer, settings, singleObject);*/
-    	return"";
+        final Gson delegatedSerializer = findAppropriateSerializer(settings, supportedResponseParameters);
+        return serializeWithSettings(delegatedSerializer, settings, singleObject);
     }
 
     @Override
@@ -97,7 +102,7 @@ public final class DefaultToApiJsonSerializer<T> implements ToApiJsonSerializer<
             json = this.helper.serializedJsonFrom(gson, dataObject);
         } else {
             if (settings.isPrettyPrint()) {
-                json = "";
+                json = this.excludeNothingWithPrettyPrintingOn.serialize(dataObject);
             } else {
                 json = serialize(dataObject);
             }
@@ -111,7 +116,7 @@ public final class DefaultToApiJsonSerializer<T> implements ToApiJsonSerializer<
             json = this.helper.serializedJsonFrom(gson, dataObject);
         } else {
             if (settings.isPrettyPrint()) {
-                json = "";
+                json = this.excludeNothingWithPrettyPrintingOn.serialize(dataObject);
             } else {
                 json = serialize(dataObject);
             }
