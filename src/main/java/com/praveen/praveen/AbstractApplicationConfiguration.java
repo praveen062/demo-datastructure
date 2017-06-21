@@ -17,9 +17,8 @@ import com.praveen.praveen.support.WebXmlConfiguration;
 @Configuration
 @Import({ WebXmlConfiguration.class, WebFrontEndConfiguration.class})
 @ComponentScan
-@ImportResource("classpath*:/META-INF/spring/appContext.xml")
-@EnableAutoConfiguration(exclude = { DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class,
-		DataSourceTransactionManagerAutoConfiguration.class, FlywayAutoConfiguration.class,
+@EnableAutoConfiguration(exclude = {
+		FlywayAutoConfiguration.class,
 		SecurityAutoConfiguration.class })
 public abstract class AbstractApplicationConfiguration{
 

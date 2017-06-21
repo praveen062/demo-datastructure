@@ -12,6 +12,9 @@ import javax.ws.rs.core.UriInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.praveen.praveen.datastructures.trees.domain.ReadStudentData;
+import com.praveen.praveen.datastructures.trees.domain.Student;
+import com.praveen.praveen.datastructures.trees.domain.StudentRepository;
 import com.praveen.praveen.support.service.ToApiJsonSerializer;
 
 @Path("hello")
@@ -19,10 +22,13 @@ import com.praveen.praveen.support.service.ToApiJsonSerializer;
 public class TreesApiResource {
 	
 	private final ToApiJsonSerializer<Employee> employeeData;
+	private final ReadStudentData data;
 	
 	@Autowired
-	public TreesApiResource(final ToApiJsonSerializer<Employee> toApiJsonSerializer) {
+	public TreesApiResource(final ToApiJsonSerializer<Employee> toApiJsonSerializer,
+			final ReadStudentData data) {
 		this.employeeData = toApiJsonSerializer;
+		this.data = data;
 		System.out.println("succesfull initialization");
 	}
 
@@ -32,7 +38,10 @@ public class TreesApiResource {
 		try{
 		Employee  employee = new Employee(Long.valueOf(1), "praveen", 1);
 		System.out.println("the employee data is ============="+employeeData);
-		return this.employeeData.serialize(employee);
+	
+		
+		
+		return this.employeeData.serialize(this.data.saveStudent());
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
