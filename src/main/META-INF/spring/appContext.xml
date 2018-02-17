@@ -15,9 +15,9 @@
 	<tx:annotation-driven />
 
 	<context:component-scan
-		base-package="com.praveen.praveen.datastructures.trees.api.*;
-		com.praveen.praveen.support.*;
-		com.praveen.praveen.support.serialization.*" >
+		base-package="com.demo.example.datastructures.trees.api.*;
+		com.demo.example.support.*;
+		com.demo.example.support.serialization.*" >
 
 		<context:exclude-filter expression="org.springframework.stereotype.Controller"
 			type="annotation" />
