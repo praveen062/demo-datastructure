@@ -28,25 +28,17 @@ public class WebXmlConfiguration extends WebMvcConfigurationSupport  {
     @Bean
     public ServletRegistrationBean jersey() {
     	
-    	System.out.println("initalized jersey");
         Servlet jerseyServlet = new SpringServlet();
         ServletRegistrationBean jerseyServletRegistration = new ServletRegistrationBean();
         jerseyServletRegistration.setServlet(jerseyServlet);
         jerseyServletRegistration.addUrlMappings("/api/*");
         jerseyServletRegistration.setName("jersey-servlet");
         jerseyServletRegistration.setLoadOnStartup(1);
-        jerseyServletRegistration.addInitParameter("com.sun.jersey.api.json.POJOMappingFeature", "true");
         jerseyServletRegistration.addInitParameter("com.sun.jersey.spi.container.ContainerResponseFilters",
                 ResponseCorsFilter.class.getName());
         jerseyServletRegistration.addInitParameter(PackagesResourceConfig.PROPERTY_PACKAGES, "com.praveen.praveen");
         jerseyServletRegistration.addInitParameter("com.sun.jersey.config.feature.DisableWADL", "true");
-		 
-		// @formatter:on
 
-        System.out.println("end of spring config");
-        // debugging for development:
-        // jerseyServletRegistration.addInitParameter("com.sun.jersey.spi.container.ContainerRequestFilters",
-        // LoggingFilter.class.getName());
         return jerseyServletRegistration;
     }
     
