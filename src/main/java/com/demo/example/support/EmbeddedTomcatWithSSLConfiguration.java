@@ -9,8 +9,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.coyote.http11.Http11NioProtocol;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
@@ -28,9 +26,7 @@ public class EmbeddedTomcatWithSSLConfiguration {
 		Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
 		Http11NioProtocol protocol = (Http11NioProtocol) connector.getProtocolHandler();
 		try {
-			System.out.println("fing me");
 			Resource resource = new ClassPathResource("KeyStore.jks");
-			System.out.println("Resource path is "+resource.getURI());
 			File keystore = getFile(resource);
 			File truststore =  getFile(resource);
 		    connector.setScheme("https");
@@ -44,7 +40,6 @@ public class EmbeddedTomcatWithSSLConfiguration {
             // ? protocol.setKeyAlias("apitester");
             return connector;
 		} catch (Exception ex) {
-			System.out.println("ERROR PRAVEEN" + ex.getMessage());
 			throw new IllegalStateException(
 					"can't access keystore: [" + "keystore" + "] or truststore: [" + "keystore" + "]", ex);
 		}
@@ -56,7 +51,7 @@ public class EmbeddedTomcatWithSSLConfiguration {
 	    }
 
 	    protected String getKeystorePass() {
-	        return "openmf";
+	        return "praveen";
 	    }
 
 	public File getFile(Resource resource) throws IOException {
