@@ -11,7 +11,5 @@ public class PraveenApplication {
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext ctx = SpringApplication.run(Configuration.class, args);
-		for(String name: ctx.getBeanDefinitionNames())
-		System.out.println("the object is "+name);
 	}
 }
