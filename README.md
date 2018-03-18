@@ -8,4 +8,4 @@ Step 2 : import the project in spring sts and right click on Application.java an
 
 server runs on localhost:8080/api/hello
 
-follow my blog praveenjinde02.blogspot.com for more info on this project
+follow  <a href="praveenjinde02.blogspot.com">my blog</a> for more info on this project
