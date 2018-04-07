@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.demo.example.datastructures.trees.domain.Employee;
 import com.demo.example.datastructures.trees.domain.ReadStudentData;
 import com.demo.example.support.service.ToApiJsonSerializer;
 
@@ -30,7 +31,6 @@ public class TreesApiResource {
 			final ReadStudentData data) {
 		this.employeeData = toApiJsonSerializer;
 		this.data = data;
-		System.out.println("succesfull initialization");
 	}
 
 	@GET
