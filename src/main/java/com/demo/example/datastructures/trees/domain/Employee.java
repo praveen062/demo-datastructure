@@ -1,4 +1,4 @@
-package com.demo.example.datastructures.trees.api;
+package com.demo.example.datastructures.trees.domain;
 
 import java.io.Serializable;
 
