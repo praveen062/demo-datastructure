@@ -6,6 +6,7 @@ import java.util.Queue;
 
 import org.springframework.stereotype.Service;
 
+import com.demo.example.datastructures.trees.data.AvlTreeNode;
 import com.demo.example.datastructures.trees.data.TreeNode;
 import com.demo.example.support.serialization.FromJsonHelper;
 import com.google.gson.JsonArray;
@@ -207,5 +208,61 @@ public class TreeOperationServiceImpl implements TreeOperationService {
 			printLeafNodeOfTheTree(root.rightLink,items);
 		}
 	}
+
+	@Override
+	public TreeNode<String> insertDataInAvalTree(TreeNode<String> root,String data) {
+		if(root == null) {
+			return new TreeNode<String>(data);
+		}else {
+			if(data != null) {
+				if(data.compareTo(root.data) < 0) {
+					root.leftLink = insertDataInAvalTree(root.leftLink,data);
+				}else if(data.compareTo(root.data) > 0) {
+					root.rightLink = insertDataInAvalTree(root.rightLink, data);
+				}else {
+					return root;
+				}
+				
+				root.height = 1 + Integer.max(height(root.leftLink), height(root.rightLink));
+				int balance = getBalance(root);
+				
+				if(balance > 1 && data.compareTo(root.leftLink.data) < 0) {
+					return rightRotate(root);
+				}
+			}
+			return null;	
+		}
+	}
+	
+	private TreeNode<String> rightRotate(TreeNode<String> root){
+		TreeNode<String> top = root.leftLink;
+		TreeNode<String> bottom = top.rightLink;
+		
+		top.rightLink = root;
+		root.leftLink = bottom;
+		
+		top.height = Integer.max(height(top.leftLink), height(top.rightLink)) + 1;
+		root.height = Integer.max(height(root.leftLink), height(root.rightLink)) + 1;
+		return top;
+	}
+
+	@Override
+	public void getAvlTreeData(TreeNode<String> root, List<String> data) {
+		
+	}
+	
+	int height(TreeNode<String> N) {
+        if (N == null)
+            return 0;
+ 
+        return N.height;
+    }
+	
+	 int getBalance(TreeNode<String> N) {
+	        if (N == null)
+	            return 0;
+	 
+	        return height(N.leftLink) - height(N.rightLink);
+	    }
 
 }
