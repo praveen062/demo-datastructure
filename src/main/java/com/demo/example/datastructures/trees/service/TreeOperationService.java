@@ -17,6 +17,7 @@ public interface TreeOperationService {
 	public void printRightSubTree(TreeNode<String> root,List<String> items);
 	public void printEdgesOfTheTree(TreeNode<String> root,List<String> items);
 	public void printLeafNodeOfTheTree(TreeNode<String> root,List<String> items);
-	public TreeNode<?> insertDataInAvalTree(TreeNode<String> root,String data);
+	public TreeNode<String> insertDataInAvalTree(TreeNode<String> root,String data);
 	public void getAvlTreeData(TreeNode<String> root,List<String> data);
+	public TreeNode<String> insertNodeDataIntoAvlTree(TreeNode<String> root, String json);
 }
