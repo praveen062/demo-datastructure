@@ -6,7 +6,6 @@ import java.util.Queue;
 
 import org.springframework.stereotype.Service;
 
-import com.demo.example.datastructures.trees.data.AvlTreeNode;
 import com.demo.example.datastructures.trees.data.TreeNode;
 import com.demo.example.support.serialization.FromJsonHelper;
 import com.google.gson.JsonArray;
@@ -34,6 +33,19 @@ public class TreeOperationServiceImpl implements TreeOperationService {
 		return root;
 	}
 
+	@Override
+	public TreeNode<String> insertNodeDataIntoAvlTree(TreeNode<String> root, String json) {
+		jsonElement = fromApiJsonHelper.parse(json);
+		JsonArray jsondata = fromApiJsonHelper.extractJsonArrayNamed("items", jsonElement);
+		
+		for(JsonElement element: jsondata){
+			String value = fromApiJsonHelper.extractStringNamed("value", element);
+			root = insertDataInAvalTree(root, value);
+		}
+		return root;
+	}
+	
+	
 	@Override
 	public TreeNode<String> insertNode(TreeNode<String> head, String item) {
 		if (head == null) {
@@ -226,11 +238,35 @@ public class TreeOperationServiceImpl implements TreeOperationService {
 				root.height = 1 + Integer.max(height(root.leftLink), height(root.rightLink));
 				int balance = getBalance(root);
 				
-				if(balance > 1 && data.compareTo(root.leftLink.data) < 0) {
-					return rightRotate(root);
+				if(balance < -1){
+					if(root.leftLink != null){
+						if(data.compareTo(root.data) < 0 && data.compareTo(root.leftLink.data) < 0){
+							root = rightRotate(root);
+						}else{
+							root = doubleRightRotate(root);
+						}
+					}else{
+						if(data.compareTo(root.data) < 0){
+							root = rightRotate(root);
+						}
+					}
+				}else if(balance > 1){
+					if(root.rightLink != null){
+						if(data.compareTo(root.data) > 0 && data.compareTo(root.rightLink.data) > 0){
+							root = leftRotate(root);
+						}else{
+							root = doubleRightRotate(root);
+						}
+					}else{
+						if(data.compareTo(root.data) > 0){
+							root = leftRotate(root);
+						}
+					}
 				}
+				
+				
 			}
-			return null;	
+			return root;	
 		}
 	}
 	
@@ -245,7 +281,29 @@ public class TreeOperationServiceImpl implements TreeOperationService {
 		root.height = Integer.max(height(root.leftLink), height(root.rightLink)) + 1;
 		return top;
 	}
-
+	
+	private TreeNode<String> leftRotate(TreeNode<String> root){
+		TreeNode<String> top = root.rightLink;
+		TreeNode<String> bottom = top.leftLink;
+		
+		top.leftLink = root;
+		root.rightLink = bottom;
+		
+		top.height = Integer.max(height(top.leftLink), height(top.rightLink)) + 1;
+		root.height = Integer.max(height(root.leftLink), height(root.rightLink)) + 1;
+		return top;
+	}
+	
+	private  TreeNode<String> doubleLeftRotate(TreeNode<String> root){
+		root.leftLink = rightRotate(root.leftLink);
+		return leftRotate(root);
+	}
+	
+	private  TreeNode<String> doubleRightRotate(TreeNode<String> root){
+		root.rightLink = leftRotate(root.rightLink);
+		return rightRotate(root);
+	}
+	
 	@Override
 	public void getAvlTreeData(TreeNode<String> root, List<String> data) {
 		

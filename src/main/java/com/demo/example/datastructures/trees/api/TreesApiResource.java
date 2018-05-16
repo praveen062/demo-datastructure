@@ -63,6 +63,21 @@ public class TreesApiResource {
 	}
 	
 	@SuppressWarnings("unchecked")
+	@POST
+	@Path("avlinsert")
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({ MediaType.APPLICATION_JSON })
+	public String insertAvlTree(@RequestBody String data,@Context HttpServletRequest request){
+		System.out.println("call");
+		TreeNode<String> treeNode = (TreeNode<String>) request.getSession().getAttribute("TreeNode");
+		treeNode = treeOperationService.insertNodeDataIntoAvlTree(treeNode, data);
+		request.getSession().setAttribute("TreeNode", treeNode);
+		System.out.println("call"+treeNode.data);
+		return data;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
 	@Path("session")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
