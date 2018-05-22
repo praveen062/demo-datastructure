@@ -24,7 +24,7 @@ public class SelectionSortServiceImpl implements SortingService{
 	
 	@Override
 	public List<String> sort(String jsonBody) {
-		List<String> sortedArray = new ArrayList<String>();
+		ArrayList<String> sortedArray = new ArrayList<String>();
 		JsonArray jsonArray = getArrayData(jsonBody);
 		for(JsonElement element: jsonArray){
 			String value = fromApiJsonHelper.extractStringNamed("value", element);
@@ -38,22 +38,26 @@ public class SelectionSortServiceImpl implements SortingService{
 		return sortedArray;
 	}
 	
-	private void sortTheArrayItems(List<String> arrayData){
-		for(int i=0;i<arrayData.size();i++){
+	private void sortTheArrayItems(ArrayList<String> arrayData){
+		int size = arrayData.size();
+		for(int i=0;i<size;i++){
 			int min = i;
-			for(int j=i+1;j<arrayData.size();j++){
+			for(int j=(i+1);j< size;j++){
 				if(arrayData.get(j).compareTo(arrayData.get(min)) < 0){
 					min = j;
 				}
 			}
-			exchange(arrayData,i,min);
+			if(min != i){
+				exchange(arrayData,i,min);
+			}
 		}
 	}
 	
-	private void exchange(List<String> arrayData,int i, int min){
+	private void exchange(ArrayList<String> arrayData,int i, int min){
 		String temp = arrayData.get(i);
-		arrayData.add(i, arrayData.get(min));
-		arrayData.add(min,temp);
+		String temp2 = arrayData.get(min);
+		arrayData.set(i, temp2);
+		arrayData.set(min,temp);
 	}
 
 	private JsonArray getArrayData(final String jsonBody){
