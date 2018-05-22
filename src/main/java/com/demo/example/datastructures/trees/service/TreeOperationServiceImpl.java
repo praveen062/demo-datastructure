@@ -123,7 +123,9 @@ public class TreeOperationServiceImpl implements TreeOperationService {
 			while(queue.peek() != null){
 				TreeNode<String> node= queue.poll();
 				items.add(node.data);
+				if(node.leftLink != null)
 				queue.add(node.leftLink);
+				if(node.rightLink != null)
 				queue.add(node.rightLink);
 			}
 		}
@@ -237,31 +239,20 @@ public class TreeOperationServiceImpl implements TreeOperationService {
 				
 				root.height = 1 + Integer.max(height(root.leftLink), height(root.rightLink));
 				int balance = getBalance(root);
-				
 				if(balance < -1){
-					if(root.leftLink != null){
-						if(data.compareTo(root.data) < 0 && data.compareTo(root.leftLink.data) < 0){
+						if(data.compareTo(root.data) < 0 && root.leftLink != null && data.compareTo(root.leftLink.data) < 0){
 							root = rightRotate(root);
 						}else{
+							if(root.leftLink !=  null)
 							root = doubleRightRotate(root);
 						}
-					}else{
-						if(data.compareTo(root.data) < 0){
-							root = rightRotate(root);
-						}
-					}
 				}else if(balance > 1){
-					if(root.rightLink != null){
-						if(data.compareTo(root.data) > 0 && data.compareTo(root.rightLink.data) > 0){
+						if(data.compareTo(root.data) > 0 && root.rightLink != null && data.compareTo(root.rightLink.data) > 0){
 							root = leftRotate(root);
 						}else{
-							root = doubleRightRotate(root);
+							if(root.rightLink != null)
+								root = doubleLeftRotate(root);
 						}
-					}else{
-						if(data.compareTo(root.data) > 0){
-							root = leftRotate(root);
-						}
-					}
 				}
 				
 				
@@ -272,7 +263,9 @@ public class TreeOperationServiceImpl implements TreeOperationService {
 	
 	private TreeNode<String> rightRotate(TreeNode<String> root){
 		TreeNode<String> top = root.leftLink;
-		TreeNode<String> bottom = top.rightLink;
+		TreeNode<String> bottom = null;
+		if(top != null)
+			bottom = top.rightLink;
 		
 		top.rightLink = root;
 		root.leftLink = bottom;
@@ -284,7 +277,9 @@ public class TreeOperationServiceImpl implements TreeOperationService {
 	
 	private TreeNode<String> leftRotate(TreeNode<String> root){
 		TreeNode<String> top = root.rightLink;
-		TreeNode<String> bottom = top.leftLink;
+		TreeNode<String> bottom =  null;
+		if(top != null)
+			bottom = top.leftLink;
 		
 		top.leftLink = root;
 		root.rightLink = bottom;
@@ -301,6 +296,7 @@ public class TreeOperationServiceImpl implements TreeOperationService {
 	
 	private  TreeNode<String> doubleRightRotate(TreeNode<String> root){
 		root.rightLink = leftRotate(root.rightLink);
+		
 		return rightRotate(root);
 	}
 	
@@ -310,17 +306,21 @@ public class TreeOperationServiceImpl implements TreeOperationService {
 	}
 	
 	int height(TreeNode<String> N) {
-        if (N == null)
+        if (N == null){
             return 0;
- 
-        return N.height;
+        }
+        else{
+        	return N.height;
+        }
     }
 	
 	 int getBalance(TreeNode<String> N) {
 	        if (N == null)
 	            return 0;
-	 
-	        return height(N.leftLink) - height(N.rightLink);
+	        else
+	        {
+	        	return height(N.rightLink) - height(N.leftLink);
+	        }
 	    }
 
 }
