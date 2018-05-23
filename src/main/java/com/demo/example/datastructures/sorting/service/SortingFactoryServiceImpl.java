@@ -10,30 +10,31 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SortingFactoryServiceImpl {
-	
-	private Map<String,SortingService> sortingServices = new HashMap<String,SortingService>();
-	
+
+	private Map<String, SortingService> sortingServices = new HashMap<String, SortingService>();
+
 	@Autowired
-	public SortingFactoryServiceImpl(Set<SortingService> sortingServices){
-		for(SortingService sortingService: sortingServices){
+	public SortingFactoryServiceImpl(Set<SortingService> sortingServices) {
+		for (SortingService sortingService : sortingServices) {
 			this.sortingServices.put(sortingService.getSortingType(), sortingService);
 		}
 	}
-	
-	public List<String> sort(String sortingType,String jsonBody){
+
+	public List<String> sort(String sortingType, String jsonBody) {
 		List<String> sortedData = null;
+		SortingService sortingService;
 		switch (sortingType) {
-		case "selection_sort": System.out.println("control is here"); 
-			SortingService sortingService = sortingServices.get("SELECTION_SORT");
-			 System.out.println("control is here"+sortingService.getSortingType()); 
+		case "selection_sort":
+			sortingService = sortingServices.get("SELECTION_SORT");
 			sortedData = sortingService.sort(jsonBody);
-			
 			break;
+		case "insertion_sort": sortingService = sortingServices.get("INSERTION_SORT");
+		sortedData = sortingService.sort(jsonBody); 
 
 		default:
 			break;
 		}
 		return sortedData;
 	}
-	
+
 }

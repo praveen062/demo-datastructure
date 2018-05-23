@@ -7,15 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.demo.example.support.serialization.FromJsonHelper;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 
 @Service
-public class SelectionSortServiceImpl implements SortingService{
+public class SelectionSortServiceImpl extends BaseArrayDataService implements SortingService{
 	
 	private static String sortingType = "SELECTION_SORT";
-	private FromJsonHelper fromApiJsonHelper;
-	private JsonElement jsonElement;
 	
 	@Autowired
 	public SelectionSortServiceImpl(final FromJsonHelper fromJsonHelper){
@@ -25,13 +21,7 @@ public class SelectionSortServiceImpl implements SortingService{
 	@Override
 	public List<String> sort(String jsonBody) {
 		ArrayList<String> sortedArray = new ArrayList<String>();
-		JsonArray jsonArray = getArrayData(jsonBody);
-		for(JsonElement element: jsonArray){
-			String value = fromApiJsonHelper.extractStringNamed("value", element);
-			if(value != null){
-				sortedArray.add(value);
-			}
-		}
+		getArrayDataFromJsonBody(jsonBody, sortedArray);
 		if(sortedArray.size() > 0){
 			sortTheArrayItems(sortedArray);
 		}
@@ -53,18 +43,6 @@ public class SelectionSortServiceImpl implements SortingService{
 		}
 	}
 	
-	private void exchange(ArrayList<String> arrayData,int i, int min){
-		String temp = arrayData.get(i);
-		String temp2 = arrayData.get(min);
-		arrayData.set(i, temp2);
-		arrayData.set(min,temp);
-	}
-
-	private JsonArray getArrayData(final String jsonBody){
-		jsonElement = fromApiJsonHelper.parse(jsonBody);
-		JsonArray jsondata = fromApiJsonHelper.extractJsonArrayNamed("items", jsonElement);
-		return jsondata;
-	}
 	@Override
 	public String getSortingType() {
 		return sortingType;
