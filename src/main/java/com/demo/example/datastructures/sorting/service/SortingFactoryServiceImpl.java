@@ -30,7 +30,16 @@ public class SortingFactoryServiceImpl {
 			break;
 		case "insertion_sort": sortingService = sortingServices.get("INSERTION_SORT");
 		sortedData = sortingService.sort(jsonBody); 
-
+		break;
+		case "shell_sort":sortingService = sortingServices.get("SHELL_SORT");
+		sortedData = sortingService.sort(jsonBody);
+		break;
+		case "bubble_sort":sortingService = sortingServices.get("BUBBLE_SORT");
+		sortedData = sortingService.sort(jsonBody);
+		break;
+		case "quick_sort":sortingService = sortingServices.get("QUICK_SORT");
+		sortedData = sortingService.sort(jsonBody);
+		break;
 		default:
 			break;
 		}
